@@ -1,0 +1,27 @@
+﻿@model  IEnumerable<Lowballers.Models.Products>
+
+@{
+    ViewData["Title"] = "Browse";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Browse @ViewBag.category</h1>
+
+<section>
+    <div class="row">
+        @foreach (var item in Model)
+        {
+
+            <div class="col-lg-4 mb3 m-1">
+                <div class="card mb-3 text-center h-100">
+                    <div class="card-body">
+                        <a asp-controller="Shop" asp-action="ProductDetails" asp-route-product="@item.Name">@item.Name</a>
+                        <h6>@String.Format("{0:c}", item.Price)</h6>
+                    </div>
+                </div>
+            </div>
+
+        }
+    </div>
+</section>
+

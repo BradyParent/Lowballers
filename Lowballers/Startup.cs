@@ -39,9 +39,35 @@ namespace Lowballers
             services.AddDbContext<LowballersContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>()
+
+            //configure identity to manage roles as well
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
-                .AddEntityFrameworkStores<LowballersContext>();
+                .AddRoles<ApplicationRole>()
+                .AddRoleManager<RoleManager<ApplicationRole>>()
+                .AddEntityFrameworkStores<LowballersContext>()
+                .AddDefaultTokenProviders();
+            //services.AddDefaultIdentity<IdentityUser>()
+            //    .AddDefaultUI(UIFramework.Bootstrap4)
+            //    .AddEntityFrameworkStores<LowballersContext>();
+
+            //google auth
+            services.AddAuthentication()
+                .AddGoogle(options =>
+                {
+                    IConfigurationSection googleAuthNSection =
+                    Configuration.GetSection("Authentication:Google");
+
+                    options.ClientId = googleAuthNSection["ClientId"];
+                    options.ClientSecret = googleAuthNSection["ClientSecret"];
+                }).AddFacebook(facebookOptions =>
+                {
+                    facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+                    facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+                });
+
+            //enable session support BEFORE adding MVC support
+            services.AddSession();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
@@ -66,6 +92,9 @@ namespace Lowballers
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+
+            //session support BEFORE MVC support
+            app.UseSession();
 
             app.UseMvc(routes =>
             {

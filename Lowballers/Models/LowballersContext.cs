@@ -1,10 +1,13 @@
 ﻿using System;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Lowballers.Models
 {
-    public partial class LowballersContext : DbContext
+    //inject User and Role classes as well as the User Id PK data type
+    //this way our dbcontext can track the usr and their roles anywhere in the application
+    public partial class LowballersContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
         public LowballersContext()
         {
@@ -32,13 +35,16 @@ namespace Lowballers.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //fix from stackoverflow
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
 
             modelBuilder.Entity<Carts>(entity =>
             {
-                entity.Property(e => e.CartId)
-                    .IsUnicode(false)
-                    .ValueGeneratedNever();
+                //entity.Property(e => e.CartId)
+                //    .IsUnicode(false)
+                //    .ValueGeneratedNever();
 
                 entity.Property(e => e.Quantity).HasDefaultValueSql("((1))");
 

@@ -20,6 +20,8 @@ namespace Lowballers.Models
         public string Name { get; set; }
         [StringLength(8000)]
         public string Description { get; set; }
+        [Range(0, 999999, ErrorMessage = "Price must be between 0 and 999999")]
+        [DisplayFormat(DataFormatString = "{0:c}")]
         [Column(TypeName = "decimal(10, 2)")]
         public decimal Price { get; set; }
         [StringLength(255)]
