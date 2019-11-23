@@ -70,6 +70,10 @@ namespace Lowballers
             services.AddSession();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            //Read configuration from appsettings.json and make available to controllers thru dependency injection
+            //controllers have no direct access to site config values so manually make these available
+            services.AddSingleton<IConfiguration>(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

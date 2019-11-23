@@ -6,28 +6,25 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Lowballers.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Lowballers.Controllers
 {
-    [Authorize(Roles = "Administrator")]
-    public class ProductsController : Controller
+    public class OrdersController : Controller
     {
         private readonly LowballersContext _context;
 
-        public ProductsController(LowballersContext context)
+        public OrdersController(LowballersContext context)
         {
             _context = context;
         }
 
-        // GET: Products
+        // GET: Orders
         public async Task<IActionResult> Index()
         {
-            var lowballersContext = _context.Products.OrderBy(p => p.Name).Include(p => p.Category);
-            return View("Index", await lowballersContext.ToListAsync());
+            return View(await _context.Orders.ToListAsync());
         }
 
-        // GET: Products/Details/5
+        // GET: Orders/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -35,42 +32,39 @@ namespace Lowballers.Controllers
                 return NotFound();
             }
 
-            var products = await _context.Products
-                .Include(p => p.Category)
-                .FirstOrDefaultAsync(m => m.ProductId == id);
-            if (products == null)
+            var orders = await _context.Orders.Include(o => o.OrderDetails)
+                .FirstOrDefaultAsync(m => m.OrderId == id);
+            if (orders == null)
             {
                 return NotFound();
             }
 
-            return View("Details", products);
+            return View(orders);
         }
 
-        // GET: Products/Create
+        // GET: Orders/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Categories.OrderBy(c => c.Name), "CategoryId", "Name");
             return View();
         }
 
-        // POST: Products/Create
+        // POST: Orders/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductId,Name,Description,Price,Photo,CategoryId")] Products products)
+        public async Task<IActionResult> Create([Bind("OrderId,OrderDate,UserId,Total,FirstName,LastName,Address,City,Province,PostalCode,Phone")] Orders orders)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(products);
+                _context.Add(orders);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "Name", products.CategoryId);
-            return View(products);
+            return View(orders);
         }
 
-        // GET: Products/Edit/5
+        // GET: Orders/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -78,23 +72,22 @@ namespace Lowballers.Controllers
                 return NotFound();
             }
 
-            var products = await _context.Products.FindAsync(id);
-            if (products == null)
+            var orders = await _context.Orders.FindAsync(id);
+            if (orders == null)
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "Name", products.CategoryId);
-            return View(products);
+            return View(orders);
         }
 
-        // POST: Products/Edit/5
+        // POST: Orders/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProductId,Name,Description,Price,Photo,CategoryId")] Products products)
+        public async Task<IActionResult> Edit(int id, [Bind("OrderId,OrderDate,UserId,Total,FirstName,LastName,Address,City,Province,PostalCode,Phone")] Orders orders)
         {
-            if (id != products.ProductId)
+            if (id != orders.OrderId)
             {
                 return NotFound();
             }
@@ -103,12 +96,12 @@ namespace Lowballers.Controllers
             {
                 try
                 {
-                    _context.Update(products);
+                    _context.Update(orders);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductsExists(products.ProductId))
+                    if (!OrdersExists(orders.OrderId))
                     {
                         return NotFound();
                     }
@@ -119,11 +112,10 @@ namespace Lowballers.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "Name", products.CategoryId);
-            return View(products);
+            return View(orders);
         }
 
-        // GET: Products/Delete/5
+        // GET: Orders/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -131,31 +123,30 @@ namespace Lowballers.Controllers
                 return NotFound();
             }
 
-            var products = await _context.Products
-                .Include(p => p.Category)
-                .FirstOrDefaultAsync(m => m.ProductId == id);
-            if (products == null)
+            var orders = await _context.Orders
+                .FirstOrDefaultAsync(m => m.OrderId == id);
+            if (orders == null)
             {
                 return NotFound();
             }
 
-            return View(products);
+            return View(orders);
         }
 
-        // POST: Products/Delete/5
+        // POST: Orders/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var products = await _context.Products.FindAsync(id);
-            _context.Products.Remove(products);
+            var orders = await _context.Orders.FindAsync(id);
+            _context.Orders.Remove(orders);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProductsExists(int id)
+        private bool OrdersExists(int id)
         {
-            return _context.Products.Any(e => e.ProductId == id);
+            return _context.Orders.Any(e => e.OrderId == id);
         }
     }
 }

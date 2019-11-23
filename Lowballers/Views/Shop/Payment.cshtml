@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewData["Title"] = "Payment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Payment</h1>
+
+<h2>Order Total: @String.Format("{0:c}", ViewBag.Total)</h2>
+
+<form method="post">
+    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+            data-key="@ViewBag.PublishableKey"
+            data-amount="@ViewBag.CentsTotal"
+            data-name="Lowballers"
+            data-description="Demo Site"
+            data-locale="auto"
+            data-currency="cad">
+    </script>
+</form>
+

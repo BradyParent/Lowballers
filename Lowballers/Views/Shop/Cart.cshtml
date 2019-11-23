@@ -37,8 +37,7 @@
                 @String.Format("{0:c}", item.Price)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.CartId">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@item.CartId">Delete</a>
+                <a asp-action="RemoveFromCart" asp-route-id="@item.CartId" onclick="return confirmDelete();">Delete</a>
             </td>
         </tr>
 }
@@ -46,8 +45,8 @@
             <td colspan="2"></td>
             <td class="text-right">@String.Format("{0:c}", total)</td>
             <td>
-                <a class="btn btn-primary" href="/shop"><< Keep Shopping</a>
-                <button class="btn btn-primary">Checkout >></button>
+                <a class="btn btn-primary" asp-controller="Shop" asp-action="Index"><< Keep Shopping</a>
+                <a class="btn btn-primary" asp-controller="Shop" asp-action="Checkout">Checkout >></a>
             </td>
         </tr>
 
