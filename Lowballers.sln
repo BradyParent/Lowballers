@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.489
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lowballers", "Lowballers\Lowballers.csproj", "{FEA57B22-4011-4F3A-9F2C-B7B90AAB1772}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lowballers", "Lowballers\Lowballers.csproj", "{FEA57B22-4011-4F3A-9F2C-B7B90AAB1772}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LowBallersTest", "LowBallersTest\LowBallersTest.csproj", "{E70C5DCC-C39E-4C5A-B260-A837DB63D562}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{FEA57B22-4011-4F3A-9F2C-B7B90AAB1772}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FEA57B22-4011-4F3A-9F2C-B7B90AAB1772}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FEA57B22-4011-4F3A-9F2C-B7B90AAB1772}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E70C5DCC-C39E-4C5A-B260-A837DB63D562}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E70C5DCC-C39E-4C5A-B260-A837DB63D562}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E70C5DCC-C39E-4C5A-B260-A837DB63D562}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E70C5DCC-C39E-4C5A-B260-A837DB63D562}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
